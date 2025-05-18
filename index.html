@@ -1,251 +1,50 @@
-<!DOCTYPE html>
-<html lang="es">
+<!DOCTYPE html><html lang="es">
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>FutbolFree - Resultados y Plantillas</title>
+<title>Free Fútbol - Resultados y Buscador</title>
 <style>
-  body { font-family: Arial, sans-serif; background: #f4f7fb; margin:0; padding:20px; color:#222; }
-  h1 { color:#0d47a1; margin-bottom: 15px; }
-  select, input[type=text], button {
-    padding: 8px; margin: 8px 0; border-radius: 5px; border: 1px solid #ccc; max-width: 320px; width: 100%;
-  }
-  .flex { display:flex; flex-wrap: wrap; gap: 20px; }
-  .panel {
-    background:#fff; box-shadow: 0 0 10px rgb(0 0 0 / 0.1); border-radius:8px;
-    padding: 15px; flex:1 1 320px; min-width:320px;
-    max-height: 600px; overflow-y: auto;
-  }
-  .team, .player, .match {
-    border-bottom: 1px solid #ddd; padding: 10px 0; display:flex; align-items:center;
-  }
-  .player img, .team img {
-    width:48px; height:48px; border-radius:50%; object-fit: cover; margin-right: 12px;
-    position: relative;
-  }
-  .icons { display:flex; gap:8px; margin-left:auto; }
-  .icon {
-    width: 20px; height: 20px; background-size: contain; background-repeat: no-repeat;
-  }
-  .goal-icon {
-    background-image: url('https://upload.wikimedia.org/wikipedia/commons/thumb/5/5e/Soccer_ball_icon.svg/512px-Soccer_ball_icon.svg.png');
-  }
-  .assist-icon {
-    background-image: url('https://upload.wikimedia.org/wikipedia/commons/thumb/6/66/Soccer_shoe_icon.svg/1024px-Soccer_shoe_icon.svg.png');
-  }
-  .own-goal-icon {
-    background-image: url('https://upload.wikimedia.org/wikipedia/commons/thumb/5/5e/Soccer_ball_icon.svg/512px-Soccer_ball_icon.svg.png');
-    filter: drop-shadow(0 0 3px red);
-  }
-  .card-yellow { color:#c9b509; font-weight:bold; margin-left: 6px; }
-  .card-red { color:#c91010; font-weight:bold; margin-left: 6px; }
-  .match-live {
-    background: #ffeded; border-left: 5px solid #e63946; margin-bottom: 10px;
-    padding: 8px; border-radius: 5px;
-  }
-  .loading { color:#888; font-style: italic; }
-  .btn { background:#0d47a1; color:#fff; border:none; border-radius:5px; cursor:pointer; margin-top:8px; }
-  .btn:disabled { background:#aaa; cursor:not-allowed; }
-  .player-info { font-size: 14px; color: #555; margin-top: 4px; }
-  #playerDetails img { width: 96px; height: 96px; margin-bottom: 8px; }
-  #playerDetails { margin-top: 15px; }
+  body { font-family: Arial, sans-serif; background: #f2f2f2; margin: 0; padding: 0; }
+  header { background: #1e3a8a; color: white; padding: 1em; text-align: center; font-size: 1.5em; }
+  main { padding: 1em; max-width: 1000px; margin: auto; }
+  input[type="text"] { padding: 0.5em; width: 100%; max-width: 600px; margin-bottom: 1em; }
+  #matches-container, #top-players, #search-results, #search-detail { background: white; padding: 1em; margin-bottom: 1em; border-radius: 8px; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
+  .player-card, .match-card { display: flex; align-items: center; margin-bottom: 0.5em; }
+  .player-card img, .match-card img { width: 40px; height: 40px; border-radius: 50%; margin-right: 1em; }
 </style>
 </head>
 <body>
-
-<h1>FutbolFree</h1>
-
-<label for="modeSelect">Ver por:</label>
-<select id="modeSelect">
-  <option value="league">Ligas</option>
-  <option value="country">Selecciones Nacionales</option>
-</select>
-
-<label id="filterLabel" for="filterSelect">Selecciona liga:</label>
-<select id="filterSelect"></select>
-
-<div class="flex" style="margin-top: 15px;">
-  <div class="panel" style="flex: 1 1 30%;">
-    <h3>Equipos</h3>
-    <input type="text" id="teamSearch" placeholder="Buscar equipo..." autocomplete="off" />
-    <div id="teamsList"><p class="loading">Cargando equipos...</p></div>
-  </div>
-  <div class="panel" style="flex: 1 1 40%;">
-    <h3>Plantilla del equipo</h3>
-    <input type="text" id="playerSearch" placeholder="Buscar jugador..." disabled autocomplete="off" />
-    <div id="playersList"><p class="loading">Selecciona un equipo para ver plantilla</p></div>
-    <div id="playerDetails"></div>
-  </div>
-  <div class="panel" style="flex: 1 1 30%;">
-    <h3>Partidos en vivo (actualiza cada 5s)</h3>
-    <div id="liveMatches"><p class="loading">Cargando partidos en vivo...</p></div>
-  </div>
-</div>
-
-<div class="panel" style="margin-top: 20px; max-width: 400px;">
-  <h3>Jugadores destacados de la semana (Top 4 goleadores)</h3>
-  <div id="playersOfWeek"><p class="loading">Cargando...</p></div>
-</div>
-
+<header>Free Fútbol - Resultados y Buscador</header>
+<main>
+<section id="search-section">
+  <input id="search-input" type="text" placeholder="Buscar jugadores, equipos o selecciones..." autocomplete="off"/>
+  <div id="search-results"></div>
+</section>
+<section>
+  <h2>Partidos en Vivo</h2>
+  <div id="matches-container">Cargando partidos en vivo...</div>
+</section>
+<section id="top-players-section">
+  <h2>Top 7 Jugadores de la Semana</h2>
+  <div id="top-players">Cargando...</div>
+</section>
+<section>
+  <h2>Detalle de Búsqueda</h2>
+  <div id="search-detail"></div>
+</section>
+</main>
 <script>
-  const API_KEY = 'f766b61c0d62bc2c47fee39b0e20f25a';
-  const API_BASE = 'https://v3.football.api-sports.io';
+const apiKey = "41f8dea6b5ff0947b023f2a54a4a4572";
+const baseUrl = "https://v3.football.api-sports.io";
+const headers = {"x-apisports-key": apiKey};async function fetchLiveMatches() { const res = await fetch(${baseUrl}/fixtures?live=all, { headers }); const data = await res.json(); const container = document.getElementById("matches-container"); container.innerHTML = ""; data.response.forEach(match => { const div = document.createElement("div"); div.className = "match-card"; div.innerHTML = <img src="${match.teams.home.logo}" /> <strong>${match.teams.home.name}</strong> ${match.goals.home} - ${match.goals.away} <strong>${match.teams.away.name}</strong> <img src="${match.teams.away.logo}" />; container.appendChild(div); }); }
 
-  // Utils fetch con API key
-  async function apiFetch(path) {
-    try {
-      const res = await fetch(API_BASE + path, {
-        headers: { 'x-apisports-key': API_KEY }
-      });
-      if (!res.ok) throw new Error('Error API: ' + res.status);
-      const json = await res.json();
-      if (!json.response) throw new Error('Sin datos');
-      return json.response;
-    } catch (e) {
-      console.error(e);
-      return null;
-    }
-  }
+async function fetchTopPlayers() { const res = await fetch(${baseUrl}/players/topscorers?league=39&season=2023, { headers }); const data = await res.json(); const container = document.getElementById("top-players"); container.innerHTML = ""; data.response.slice(0, 7).forEach(p => { const div = document.createElement("div"); div.className = "player-card"; div.innerHTML = <img src="${p.player.photo}" /> <div> <strong>${p.player.name}</strong><br> Goles: ${p.statistics[0].goals.total}, Asistencias: ${p.statistics[0].goals.assists || 0} </div>; container.appendChild(div); }); }
 
-  // Elementos DOM
-  const modeSelect = document.getElementById('modeSelect');
-  const filterSelect = document.getElementById('filterSelect');
-  const filterLabel = document.getElementById('filterLabel');
-  const teamSearch = document.getElementById('teamSearch');
-  const teamsList = document.getElementById('teamsList');
-  const playerSearch = document.getElementById('playerSearch');
-  const playersList = document.getElementById('playersList');
-  const playerDetails = document.getElementById('playerDetails');
-  const liveMatches = document.getElementById('liveMatches');
-  const playersOfWeek = document.getElementById('playersOfWeek');
+async function search(query) { const res = await fetch(${baseUrl}/players?search=${query}&season=2023, { headers }); const data = await res.json(); const container = document.getElementById("search-results"); const detail = document.getElementById("search-detail"); container.innerHTML = ""; detail.innerHTML = ""; if (!data.response.length) { container.innerText = "No se encontraron resultados."; return; } data.response.forEach(p => { const div = document.createElement("div"); div.className = "player-card"; div.innerHTML = <img src="${p.player.photo}" /> <div> <strong>${p.player.name}</strong><br> Edad: ${p.player.age}, Nacionalidad: ${p.player.nationality} </div>; container.appendChild(div); div.onclick = () => { detail.innerHTML = <h3>${p.player.name}</h3> <p>Edad: ${p.player.age}</p> <p>Nacimiento: ${p.player.birth.date}, País: ${p.player.birth.country}</p> <p>Nacionalidad: ${p.player.nationality}</p> <p>Altura: ${p.player.height}, Peso: ${p.player.weight}</p> <img src="${p.player.photo}" style="width:100px"/>; }; }); }
 
-  let currentSeason = new Date().getFullYear() - (new Date().getMonth() < 7 ? 1 : 0); // ajusta temporada
-  let leagues = [];
-  let countries = [];
-  let teams = [];
-  let players = [];
-  let selectedLeagueId = null;
-  let selectedCountry = null;
-  let selectedTeamId = null;
+document.getElementById("search-input").addEventListener("input", e => { const query = e.target.value.trim(); if (query.length > 2) search(query); });
 
-  // Cargar ligas o selecciones según modo
-  async function loadFilters() {
-    filterSelect.innerHTML = '<option>Cargando...</option>';
-    if (modeSelect.value === 'league') {
-      filterLabel.textContent = 'Selecciona liga:';
-      leagues = await apiFetch('/leagues?current=true');
-      if (!leagues) { filterSelect.innerHTML = '<option>Error al cargar ligas</option>'; return; }
-      filterSelect.innerHTML = '';
-      leagues.forEach(l => {
-        const o = document.createElement('option');
-        o.value = l.league.id;
-        o.textContent = ${l.league.name} (${l.country.name});
-        filterSelect.appendChild(o);
-      });
-      selectedLeagueId = leagues[0]?.league.id || null;
-    } else {
-      filterLabel.textContent = 'Selecciona selección nacional:';
-      countries = await apiFetch('/countries');
-      if (!countries) { filterSelect.innerHTML = '<option>Error al cargar países</option>'; return; }
-      filterSelect.innerHTML = '';
-      countries.forEach(c => {
-        const o = document.createElement('option');
-        o.value = c.name;
-        o.textContent = c.name;
-        filterSelect.appendChild(o);
-      });
-      selectedCountry = countries[0]?.name || null;
-    }
-  }
+fetchLiveMatches(); fetchTopPlayers(); setInterval(fetchLiveMatches, 5000); </script>
 
-  // Cargar equipos según filtro
-  async function loadTeams() {
-    teamsList.innerHTML = '<p class="loading">Cargando equipos...</p>';
-    teamSearch.value = '';
-    playersList.innerHTML = '<p class="loading">Selecciona un equipo para ver plantilla</p>';
-    playerSearch.value = '';
-    playerSearch.disabled = true;
-    playerDetails.innerHTML = '';
-    players = [];
-    selectedTeamId = null;
-
-    if (modeSelect.value === 'league') {
-      if (!selectedLeagueId) {
-        teamsList.innerHTML = '<p>Error: liga no seleccionada</p>';
-        return;
-      }
-      const data = await apiFetch(/teams?league=${selectedLeagueId}&season=${currentSeason});
-      if (!data) { teamsList.innerHTML = '<p>Error cargando equipos</p>'; return; }
-      teams = data;
-    } else {
-      if (!selectedCountry) {
-        teamsList.innerHTML = '<p>Error: país no seleccionado</p>';
-        return;
-      }
-      const data = await apiFetch(/teams?country=${encodeURIComponent(selectedCountry)});
-      if (!data) { teamsList.innerHTML = '<p>Error cargando equipos</p>'; return; }
-      teams = data;
-    }
-
-    if (teams.length === 0) {
-      teamsList.innerHTML = '<p>No se encontraron equipos</p>';
-      return;
-    }
-
-    renderTeams(teams);
-  }
-
-  // Render equipos
-  function renderTeams(list) {
-    if (list.length === 0) {
-      teamsList.innerHTML = '<p>No hay equipos que coincidan con la búsqueda</p>';
-      return;
-    }
-    teamsList.innerHTML = '';
-    list.forEach(team => {
-      const div = document.createElement('div');
-      div.className = 'team';
-      div.innerHTML = `
-        <img src="${team.team.logo || 'https://via.placeholder.com/48'}" alt="${team.team.name}" />
-        <div>
-          <strong>${team.team.name}</strong><br/>
-          <small>${team.venue || ''}</small>
-        </div>
-      `;
-      div.style.cursor = 'pointer';
-      div.onclick = () => selectTeam(team.team.id);
-      teamsList.appendChild(div);
-    });
-  }
-
-  // Seleccionar equipo y cargar plantilla
-  async function selectTeam(teamId) {
-    selectedTeamId = teamId;
-    playerSearch.disabled = false;
-    playerSearch.value = '';
-    playerDetails.innerHTML = '';
-    playersList.innerHTML = '<p class="loading">Cargando plantilla...</p>';
-
-    const data = await apiFetch(/players?team=${teamId}&season=${currentSeason});
-    if (!data) {
-      playersList.innerHTML = '<p>Error cargando plantilla</p>';
-      return;
-    }
-    players = data;
-    renderPlayers(players);
-  }
-
-  // Render plantilla jugadores
-  function renderPlayers(list) {
-    if (list.length === 0) {
-      playersList.innerHTML = '<p>No hay jugadores para esta plantilla</p>';
-      return;
-    }
-    playersList.innerHTML = '';
-    list.forEach(p => {
-      const div = document.createElement('div');
-      div.className = 'player';
-      div.innerHTML = `
-        <img src="${p.player.photo || 'https://via.placeholder.com/48'}" alt="${p.player.name}" />
-        <div>
-          <strong>${p.player.name}</strong>
+</body>
+</html>
