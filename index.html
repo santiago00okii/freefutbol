@@ -8,7 +8,7 @@
     @import url('https://fonts.googleapis.com/css2?family=Roboto+Mono&display=swap');
 
     body {
-      background: #e8ecef;
+      background-color: #e7ebf0;
       font-family: 'Roboto Mono', monospace;
       margin: 0;
       padding: 20px;
@@ -16,111 +16,120 @@
       justify-content: center;
     }
     .container {
-      background: white;
-      width: 360px;
-      border: 1px solid #0055a4;
+      background: #fff;
+      width: 380px;
+      border: 2px solid #004aad;
       border-radius: 8px;
+      padding: 20px;
       box-shadow: 0 4px 10px rgba(0,0,0,0.15);
-      padding: 20px 25px;
     }
     header {
-      text-align: center;
-      border-bottom: 2px solid #0055a4;
+      border-bottom: 3px solid #004aad;
       padding-bottom: 10px;
       margin-bottom: 15px;
+      text-align: center;
     }
     header img {
       width: 140px;
       margin-bottom: 5px;
     }
     header h1 {
-      font-size: 1.2rem;
-      color: #0055a4;
       margin: 0;
-      font-weight: 700;
-      letter-spacing: 1px;
+      color: #004aad;
+      font-weight: 900;
+      letter-spacing: 1.5px;
+      font-size: 1.3rem;
     }
+
     form {
-      margin-bottom: 20px;
+      margin-bottom: 25px;
     }
     label {
       display: block;
       font-weight: 700;
-      color: #0055a4;
-      margin: 10px 0 5px 0;
-      font-size: 0.85rem;
-      letter-spacing: 0.5px;
+      color: #004aad;
+      margin: 12px 0 6px 0;
+      font-size: 0.9rem;
     }
     input, select {
       width: 100%;
-      padding: 10px 8px;
-      border: 1.8px solid #0055a4;
-      border-radius: 4px;
-      font-size: 1rem;
+      padding: 10px 12px;
       font-family: 'Roboto Mono', monospace;
-      box-sizing: border-box;
-      color: #003d75;
       font-weight: 600;
+      font-size: 1rem;
+      color: #00357c;
+      border: 2px solid #004aad;
+      border-radius: 5px;
+      box-sizing: border-box;
       outline-offset: 2px;
     }
     input::placeholder {
-      color: #aac4e0;
+      color: #a3b5d9;
       font-weight: 400;
     }
     button {
+      width: 100%;
       margin-top: 20px;
-      background: #0055a4;
+      padding: 14px;
+      background-color: #004aad;
       border: none;
       color: white;
-      font-weight: 700;
-      font-size: 1.1rem;
-      padding: 12px;
-      width: 100%;
-      border-radius: 5px;
+      font-weight: 900;
+      font-size: 1.15rem;
+      border-radius: 7px;
       cursor: pointer;
-      letter-spacing: 1px;
+      letter-spacing: 1.2px;
       transition: background-color 0.3s ease;
     }
     button:hover {
-      background-color: #003d75;
+      background-color: #002f6c;
     }
-    /* Recibo */
+
+    /* Recibo visual */
     #receipt {
-      background: #f2f9ff;
-      border: 1.8px solid #0055a4;
-      border-radius: 6px;
-      padding: 18px 25px;
+      display: none;
+      border: 2px solid #004aad;
+      border-radius: 8px;
+      background-color: #f5faff;
+      padding: 20px;
       font-size: 0.9rem;
-      color: #003d75;
-      white-space: pre-wrap;
-      font-family: 'Roboto Mono', monospace;
-      line-height: 1.4;
+      color: #00357c;
+      white-space: normal;
       user-select: text;
     }
     #receipt .title {
       text-align: center;
       font-weight: 900;
-      font-size: 1.1rem;
-      margin-bottom: 15px;
-      border-bottom: 1.5px solid #0055a4;
-      padding-bottom: 8px;
-    }
-    #receipt .section {
+      font-size: 1.2rem;
       margin-bottom: 12px;
+      border-bottom: 2px solid #004aad;
+      padding-bottom: 10px;
+    }
+    #receipt .row {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 8px;
+      padding: 3px 0;
+      border-bottom: 1px dotted #004aad;
     }
     #receipt .label {
       font-weight: 700;
-      letter-spacing: 0.8px;
+      letter-spacing: 0.6px;
     }
     #receipt .value {
       font-weight: 600;
+      text-align: right;
+      font-family: 'Roboto Mono', monospace;
     }
     #receipt .footer {
       text-align: center;
-      margin-top: 20px;
+      margin-top: 18px;
       font-size: 0.8rem;
-      color: #0055a4;
-      letter-spacing: 0.7px;
+      font-weight: 700;
+      color: #004aad;
+      letter-spacing: 1px;
+      border-top: 2px solid #004aad;
+      padding-top: 8px;
     }
   </style>
 </head>
@@ -128,15 +137,16 @@
   <div class="container">
     <header>
       <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/7a/Logo_Banco_de_Venezuela.svg/256px-Logo_Banco_de_Venezuela.svg.png" alt="Banco de Venezuela" />
-      <h1>Pago Móvil</h1>
+      <h1>PAGO MÓVIL</h1>
     </header>
+
     <form id="pagoForm">
       <label for="telefono">Número de teléfono del destinatario:</label>
       <input type="tel" id="telefono" name="telefono" placeholder="04141234567" pattern="0\d{10}" required />
 
       <label for="cedula">Cédula del destinatario:</label>
       <input type="text" id="cedula" name="cedula" placeholder="12345678" pattern="\d{6,8}" required />
-      
+
       <label for="monto">Monto a pagar (Bs):</label>
       <input type="number" id="monto" name="monto" min="1" step="0.01" placeholder="1500.50" required />
 
@@ -152,7 +162,37 @@
       <button type="submit">Realizar Pago</button>
     </form>
 
-    <div id="receipt" style="display:none;"></div>
+    <div id="receipt" aria-live="polite" aria-atomic="true" role="region">
+      <div class="title">BANCO DE VENEZUELA S.A.</div>
+      <div class="title" style="font-size:1rem; margin-bottom:20px;">Pago Móvil - Comprobante</div>
+
+      <div class="row">
+        <div class="label">Fecha y hora:</div>
+        <div class="value" id="fechaHora"></div>
+      </div>
+      <div class="row">
+        <div class="label">Teléfono:</div>
+        <div class="value" id="telDisplay"></div>
+      </div>
+      <div class="row">
+        <div class="label">Cédula:</div>
+        <div class="value" id="cedDisplay"></div>
+      </div>
+      <div class="row">
+        <div class="label">Monto Bs:</div>
+        <div class="value" id="montoDisplay"></div>
+      </div>
+      <div class="row">
+        <div class="label">Concepto:</div>
+        <div class="value" id="conceptoDisplay"></div>
+      </div>
+      <div class="row">
+        <div class="label">Referencia:</div>
+        <div class="value" id="referenciaDisplay"></div>
+      </div>
+
+      <div class="footer">Gracias por preferirnos</div>
+    </div>
   </div>
 
   <script>
@@ -167,8 +207,14 @@
 
     const form = document.getElementById('pagoForm');
     const receipt = document.getElementById('receipt');
+    const fechaHoraElem = document.getElementById('fechaHora');
+    const telDisplay = document.getElementById('telDisplay');
+    const cedDisplay = document.getElementById('cedDisplay');
+    const montoDisplay = document.getElementById('montoDisplay');
+    const conceptoDisplay = document.getElementById('conceptoDisplay');
+    const referenciaDisplay = document.getElementById('referenciaDisplay');
 
-    form.addEventListener('submit', (e) => {
+    form.addEventListener('submit', e => {
       e.preventDefault();
 
       const telefono = form.telefono.value.trim();
@@ -194,7 +240,7 @@
         return;
       }
 
-      // Fecha y hora actual en formato DD/MM/YYYY HH:mm:ss
+      // Fecha y hora actual formato DD/MM/YYYY HH:mm:ss
       const now = new Date();
       const dd = String(now.getDate()).padStart(2, '0');
       const mm = String(now.getMonth() + 1).padStart(2, '0');
@@ -202,32 +248,18 @@
       const hh = String(now.getHours()).padStart(2, '0');
       const min = String(now.getMinutes()).padStart(2, '0');
       const ss = String(now.getSeconds()).padStart(2, '0');
-      const fecha = ${dd}/${mm}/${yyyy} ${hh}:${min}:${ss};
+      const fechaHora = ${dd}/${mm}/${yyyy} ${hh}:${min}:${ss};
 
       const referencia = generarReferencia();
 
-      // Generar recibo idéntico con referencia
-      const textoRecibo = 
-`------------------------------
-BANCO DE VENEZUELA S.A.
-------------------------------
-Pago Móvil - Comprobante
+      // Mostrar recibo con datos
+      fechaHoraElem.textContent = fechaHora;
+      telDisplay.textContent = telefono;
+      cedDisplay.textContent = cedula;
+      montoDisplay.textContent = monto.toFixed(2);
+      conceptoDisplay.textContent = concepto;
+      referenciaDisplay.textContent = referencia;
 
-Fecha y hora: ${fecha}
-
-Teléfono:     ${telefono}
-Cédula:       ${cedula}
-
-Monto Bs:     ${monto.toFixed(2)}
-Concepto:     ${concepto}
-
-Referencia:   ${referencia}
-
-------------------------------
-Gracias por preferirnos
-------------------------------`;
-
-      receipt.textContent = textoRecibo;
       receipt.style.display = 'block';
 
       form.reset();
