@@ -1,68 +1,136 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Fútbol Free - Transfermarkt Estático</title>
-<style>
-  body { font-family: Arial, sans-serif; margin: 0; background: #f0f2f5; padding: 20px; color: #222;}
-  h1, h2 { color: #004d99; }
-  input#search { width: 100%; padding: 12px; margin-bottom: 20px; font-size: 16px; border-radius: 8px; border: 1px solid #ccc; }
-  .container { max-width: 1200px; margin: 0 auto; }
-  .section { margin-bottom: 40px; background: white; padding: 20px; border-radius: 10px; box-shadow: 0 0 10px rgba(0,0,0,0.1);}
-  .player, .match { display: flex; align-items: center; gap: 15px; border-bottom: 1px solid #eee; padding: 10px 0; }
-  .player img, .match img { width: 80px; height: 100px; border-radius: 8px; object-fit: cover; }
-  .player-info { flex: 1; }
-  .match-info { flex: 1; font-size: 18px; }
-  .small-text { font-size: 14px; color: #666; }
-  .top7 .player img { width: 60px; height: 80px; }
-  .tags {font-size: 13px; color:#555; margin-top: 4px;}
-  .tags span { margin-right: 8px; background: #ddeeff; padding: 3px 8px; border-radius: 12px;}
-  .match-score { font-weight: bold; font-size: 20px; margin: 0 15px; min-width: 60px; text-align: center;}
-  .icon { width: 18px; height: 18px; margin-left: 6px; vertical-align: middle; }
-</style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Pago Móvil Simulado - Banco de Venezuela</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f0f4f7;
+      margin: 0;
+      padding: 0;
+    }
+    header {
+      background-color: #0055a4;
+      color: white;
+      padding: 15px 20px;
+      text-align: center;
+      font-size: 1.5rem;
+      font-weight: bold;
+    }
+    main {
+      max-width: 400px;
+      background: white;
+      margin: 40px auto;
+      border-radius: 8px;
+      padding: 20px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+    label {
+      display: block;
+      margin: 15px 0 5px;
+      font-weight: bold;
+      color: #0055a4;
+    }
+    input, select {
+      width: 100%;
+      padding: 10px;
+      border: 1.5px solid #0055a4;
+      border-radius: 4px;
+      font-size: 1rem;
+      box-sizing: border-box;
+    }
+    button {
+      margin-top: 20px;
+      width: 100%;
+      padding: 12px;
+      background-color: #0055a4;
+      border: none;
+      color: white;
+      font-size: 1.2rem;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+    button:hover {
+      background-color: #003d75;
+    }
+    .message {
+      margin-top: 20px;
+      padding: 15px;
+      background-color: #dff0d8;
+      color: #3c763d;
+      border-radius: 5px;
+      display: none;
+    }
+    .footer {
+      text-align: center;
+      margin-top: 40px;
+      color: #555;
+      font-size: 0.9rem;
+    }
+  </style>
 </head>
 <body>
-  <div class="container">
-    <h1>Fútbol Free</h1>
-    <input type="text" id="search" placeholder="Buscar jugadores, equipos o selecciones..." autocomplete="off" />
+  <header>Banco de Venezuela - Pago Móvil Simulado</header>
+  <main>
+    <form id="pagoForm">
+      <label for="cedula">Cédula del destinatario:</label>
+      <input type="text" id="cedula" name="cedula" placeholder="Ej: 12345678" pattern="\d{6,8}" required />
+      
+      <label for="monto">Monto a pagar (Bs):</label>
+      <input type="number" id="monto" name="monto" min="1" step="0.01" placeholder="Ej: 1500.50" required />
 
-    <div id="top7" class="section top7"></div>
-    <div id="results" class="section"></div>
-    <div id="players" class="section"></div>
-  </div>
+      <label for="concepto">Concepto:</label>
+      <select id="concepto" name="concepto" required>
+        <option value="" disabled selected>Seleccione un concepto</option>
+        <option value="Pago servicios">Pago servicios</option>
+        <option value="Compra">Compra</option>
+        <option value="Préstamo">Préstamo</option>
+        <option value="Otro">Otro</option>
+      </select>
 
-<script>
-  // Datos estáticos simulados - 80 jugadores, 65 equipos, partidos
-  // Para brevedad en chat, aquí solo agrego 80 jugadores reales con info básica + 65 equipos y partidos en vivo simulados
+      <button type="submit">Realizar Pago</button>
+    </form>
+    <div class="message" id="message"></div>
+  </main>
+  <div class="footer">Página simulada para fines de juego, no procesa pagos reales.</div>
 
-  const teams = [
-    "Real Madrid", "Barcelona", "Manchester United", "Chelsea", "Liverpool", "Bayern Munich", "Paris Saint-Germain",
-    "Juventus", "Inter Milan", "AC Milan", "Arsenal", "Manchester City", "Tottenham", "Atletico Madrid", "Sevilla",
-    "Borussia Dortmund", "Napoli", "AS Roma", "Lazio", "Valencia", "Ajax", "Benfica", "Porto", "Celtic", "Rangers",
-    "Leicester City", "West Ham", "Everton", "Villarreal", "Real Sociedad", "RB Leipzig", "Schalke 04", "Bayer Leverkusen",
-    "Olympique Lyon", "Marseille", "Monaco", "Zenit St Petersburg", "Shakhtar Donetsk", "Galatasaray", "Fenerbahce",
-    "Besiktas", "Dynamo Kyiv", "CSKA Moscow", "Sporting CP", "Atlético Mineiro", "Flamengo", "Palmeiras", "Corinthians",
-    "Santos", "Boca Juniors", "River Plate", "Colo-Colo", "Universidad de Chile", "LA Galaxy", "New York Red Bulls",
-    "Toronto FC", "Seattle Sounders", "Atlanta United", "Club América", "Cruz Azul", "Tigres UANL", "Pachuca"
-  ];
+  <script>
+    const form = document.getElementById('pagoForm');
+    const messageDiv = document.getElementById('message');
 
-  // Íconos (pelota, asistencia, autogol) base64 PNG simplificado (por brevedad)
-  const icons = {
-    gol: 'data:image/svg+xml;base64,PHN2ZyBoZWlnaHQ9IjE4IiB3aWR0aD0iMTgiIHZpZXdCb3g9IjAgMCAxOCAxOCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48Y2lyY2xlIGN4PSI5IiBjeT0iOSIgcj0iOSIgc3R5bGU9ImZpbGw6I2ZmZjAwMCIvPjwvc3ZnPg==',
-    asistencia: 'data:image/svg+xml;base64,PHN2ZyBoZWlnaHQ9IjE4IiB3aWR0aD0iMTgiIHZpZXdCb3g9IjAgMCAxOCAxOCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cG9seWxpbmUgcG9pbnRzPSI0LDE0IDYsMTAgMTIsMTQgOCIiIHN0eWxlPSJmaWxsOiM0NDQ0ZjYiLz48L3N2Zz4=',
-    autogol: 'data:image/svg+xml;base64,PHN2ZyBoZWlnaHQ9IjE4IiB3aWR0aD0iMTgiIHZpZXdCb3g9IjAgMCAxOCAxOCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48Y2lyY2xlIGN4PSI5IiBjeT0iOSIgcj0iOSIgc3R5bGU9ImZpbGw6I2ZmMDAwMCIvPjwvc3ZnPg=='
-  };
+    form.addEventListener('submit', function(event) {
+      event.preventDefault();
 
-  // 80 jugadores con fotos, país, títulos, equipos previos, nacionalidades (reales y ficticios)
-  const players = [
-    {id:1,name:"Lionel Messi",position:"Delantero",team:"Paris Saint-Germain",birthCountry:"Argentina",titles:34,photo:"https://cdn.sportmonks.com/images/soccer/players/1/1.png",nationalities:["Argentina"],previousTeams:["Barcelona","Newell's Old Boys"],goals:750,assists:320,yellowCards:50,redCards:2},
-    {id:2,name:"Cristiano Ronaldo",position:"Delantero",team:"Manchester United",birthCountry:"Portugal",titles:32,photo:"https://cdn.sportmonks.com/images/soccer/players/2/2.png",nationalities:["Portugal"],previousTeams:["Real Madrid","Juventus"],goals:780,assists:220,yellowCards:60,redCards:4},
-    {id:3,name:"Kylian Mbappé",position:"Delantero",team:"Paris Saint-Germain",birthCountry:"Francia",titles:15,photo:"https://cdn.sportmonks.com/images/soccer/players/3/3.png",nationalities:["Francia"],previousTeams:["Monaco"],goals:160,assists:90,yellowCards:15,redCards:1},
-    {id:4,name:"Neymar Jr",position:"Delantero",team:"Paris Saint-Germain",birthCountry:"Brasil",titles:24,photo:"https://cdn.sportmonks.com/images/soccer/players/4/4.png",nationalities:["Brasil"],previousTeams:["Barcelona","Santos"],goals:220,assists:140,yellowCards:45,redCards:3},
-    {id:5,name:"Robert Lewandowski",position:"Delantero",team:"Barcelona",birthCountry:"Polonia",titles:20,photo:"https://cdn.sportmonks.com/images/soccer/players/5/5.png",nationalities:["Polonia"],previousTeams:["Bayern Munich","Borussia Dortmund"],goals:410,assists:100,yellowCards:20,redCards:1},
-    {id:6,name:"Kevin De Bruyne",position:"Centrocampista",team:"Manchester City",birthCountry:"Bélgica",titles:18,photo:"https://cdn.sportmonks.com/images/soccer/players/6/6.png",nationalities:["Bélgica"],previousTeams:["Wolfsburgo","Chelsea"],goals:80,assists:120,yellowCards:30,redCards:2},
-    {id:7,name:"Virgil van Dijk",position:"Defensa",team:"Liverpool",birthCountry:"Países Bajos",titles:10,photo:"https://cdn.sportmonks.com/images/soccer/players/7/7.png",nationalities:["Países Bajos"],previousTeams:["Southampton"],goals:20,assists:10,yellowCards:18,redCards:1},
-    {id:8,name:"Luka Modrić",position:"Centrocampista",team:"Real Madrid",birthCountry:"Croacia",titles:25,photo:"https://cdn.sportmonks.com/images/soccer/players/8/8.png",nationalities:["Croacia"],previousTeams:["Tottenham"],goals:60,assists:80,yellowCards:40,redCards:0},
-    {id:9,name:"Sergio Ramos",position:"Defensa",team:"Paris Saint-Germain",birthCountry:"España",titles:23,photo:"https://cdn.sportmonks.com/images/soccer/players/9/9.png",nationalities:["España"],previousTeams:["Real Madrid"],goals:100,assists:30,yellowCards:110,redCards:15},
-    {id:10,name:"Mohamed Salah",position:"Delantero",team:"Liverpool",birthCountry:"Egipto",titles:12,photo:"https://cdn.sportmonks.com/images/soccer/players
+      const cedula = form.cedula.value.trim();
+      const monto = parseFloat(form.monto.value);
+      const concepto = form.concepto.value;
+
+      if (!/^\d{6,8}$/.test(cedula)) {
+        alert('Por favor, ingresa una cédula válida (6 a 8 dígitos).');
+        return;
+      }
+      if (isNaN(monto) || monto <= 0) {
+        alert('Por favor, ingresa un monto válido mayor a 0.');
+        return;
+      }
+      if (!concepto) {
+        alert('Por favor, selecciona un concepto.');
+        return;
+      }
+
+      // Simula la realización del pago
+      messageDiv.style.display = 'block';
+      messageDiv.textContent = `Pago móvil simulado realizado con éxito.
+      \nDestinatario: Cédula ${cedula}
+      \nMonto: Bs ${monto.toFixed(2)}
+      \nConcepto: ${concepto}`;
+
+      // Opcional: limpiar el formulario
+      form.reset();
+    });
+  </script>
+</body>
+</html>
