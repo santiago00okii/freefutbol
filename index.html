@@ -1,137 +1,99 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Pago Móvil Simulado - Banco de Venezuela</title>
-  <style>
-    @import url('https://fonts.googleapis.com/css2?family=Roboto+Mono&display=swap');
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Pago Móvil Simulado - Banco de Venezuela</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Roboto+Mono&display=swap');
 
-    body {
-      background-color: #e7ebf0;
-      font-family: 'Roboto Mono', monospace;
-      margin: 0;
-      padding: 20px;
-      display: flex;
-      justify-content: center;
-    }
-    .container {
-      background: #fff;
-      width: 380px;
-      border: 2px solid #004aad;
-      border-radius: 8px;
-      padding: 20px;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.15);
-    }
-    header {
-      border-bottom: 3px solid #004aad;
-      padding-bottom: 10px;
-      margin-bottom: 15px;
-      text-align: center;
-    }
-    header img {
-      width: 140px;
-      margin-bottom: 5px;
-    }
-    header h1 {
-      margin: 0;
-      color: #004aad;
-      font-weight: 900;
-      letter-spacing: 1.5px;
-      font-size: 1.3rem;
-    }
+  body {
+    background-color: #e7ebf0;
+    font-family: 'Roboto Mono', monospace;
+    margin: 0;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .container {
+    background: #fff;
+    width: 400px;
+    border: 2px solid #004aad;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+  }
+  header {
+    border-bottom: 3px solid #004aad;
+    padding-bottom: 10px;
+    margin-bottom: 15px;
+    text-align: center;
+  }
+  header img {
+    width: 140px;
+    margin-bottom: 5px;
+  }
+  header h1 {
+    margin: 0;
+    color: #004aad;
+    font-weight: 900;
+    letter-spacing: 1.5px;
+    font-size: 1.3rem;
+  }
 
-    form {
-      margin-bottom: 25px;
-    }
-    label {
-      display: block;
-      font-weight: 700;
-      color: #004aad;
-      margin: 12px 0 6px 0;
-      font-size: 0.9rem;
-    }
-    input, select {
-      width: 100%;
-      padding: 10px 12px;
-      font-family: 'Roboto Mono', monospace;
-      font-weight: 600;
-      font-size: 1rem;
-      color: #00357c;
-      border: 2px solid #004aad;
-      border-radius: 5px;
-      box-sizing: border-box;
-      outline-offset: 2px;
-    }
-    input::placeholder {
-      color: #a3b5d9;
-      font-weight: 400;
-    }
-    button {
-      width: 100%;
-      margin-top: 20px;
-      padding: 14px;
-      background-color: #004aad;
-      border: none;
-      color: white;
-      font-weight: 900;
-      font-size: 1.15rem;
-      border-radius: 7px;
-      cursor: pointer;
-      letter-spacing: 1.2px;
-      transition: background-color 0.3s ease;
-    }
-    button:hover {
-      background-color: #002f6c;
-    }
+  form {
+    margin-bottom: 25px;
+  }
+  label {
+    display: block;
+    font-weight: 700;
+    color: #004aad;
+    margin: 12px 0 6px 0;
+    font-size: 0.9rem;
+  }
+  input, select {
+    width: 100%;
+    padding: 10px 12px;
+    font-family: 'Roboto Mono', monospace;
+    font-weight: 600;
+    font-size: 1rem;
+    color: #00357c;
+    border: 2px solid #004aad;
+    border-radius: 5px;
+    box-sizing: border-box;
+    outline-offset: 2px;
+  }
+  input::placeholder {
+    color: #a3b5d9;
+    font-weight: 400;
+  }
+  button {
+    width: 100%;
+    margin-top: 20px;
+    padding: 14px;
+    background-color: #004aad;
+    border: none;
+    color: white;
+    font-weight: 900;
+    font-size: 1.15rem;
+    border-radius: 7px;
+    cursor: pointer;
+    letter-spacing: 1.2px;
+    transition: background-color 0.3s ease;
+  }
+  button:hover {
+    background-color: #002f6c;
+  }
 
-    /* Recibo visual */
-    #receipt {
-      display: none;
-      border: 2px solid #004aad;
-      border-radius: 8px;
-      background-color: #f5faff;
-      padding: 20px;
-      font-size: 0.9rem;
-      color: #00357c;
-      white-space: normal;
-      user-select: text;
-    }
-    #receipt .title {
-      text-align: center;
-      font-weight: 900;
-      font-size: 1.2rem;
-      margin-bottom: 12px;
-      border-bottom: 2px solid #004aad;
-      padding-bottom: 10px;
-    }
-    #receipt .row {
-      display: flex;
-      justify-content: space-between;
-      margin-bottom: 8px;
-      padding: 3px 0;
-      border-bottom: 1px dotted #004aad;
-    }
-    #receipt .label {
-      font-weight: 700;
-      letter-spacing: 0.6px;
-    }
-    #receipt .value {
-      font-weight: 600;
-      text-align: right;
-      font-family: 'Roboto Mono', monospace;
-    }
-    #receipt .footer {
-      text-align: center;
-      margin-top: 18px;
-      font-size: 0.8rem;
-      font-weight: 700;
-      color: #004aad;
-      letter-spacing: 1px;
-      border-top: 2px solid #004aad;
-      padding-top: 8px;
-    }
-  </style>
+  #receiptImage {
+    margin-top: 20px;
+    border: 2px solid #004aad;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    max-width: 400px;
+  }
+</style>
 </head>
 <body>
   <div class="container">
@@ -161,41 +123,16 @@
 
       <button type="submit">Realizar Pago</button>
     </form>
-
-    <div id="receipt" aria-live="polite" aria-atomic="true" role="region">
-      <div class="title">BANCO DE VENEZUELA S.A.</div>
-      <div class="title" style="font-size:1rem; margin-bottom:20px;">Pago Móvil - Comprobante</div>
-
-      <div class="row">
-        <div class="label">Fecha y hora:</div>
-        <div class="value" id="fechaHora"></div>
-      </div>
-      <div class="row">
-        <div class="label">Teléfono:</div>
-        <div class="value" id="telDisplay"></div>
-      </div>
-      <div class="row">
-        <div class="label">Cédula:</div>
-        <div class="value" id="cedDisplay"></div>
-      </div>
-      <div class="row">
-        <div class="label">Monto Bs:</div>
-        <div class="value" id="montoDisplay"></div>
-      </div>
-      <div class="row">
-        <div class="label">Concepto:</div>
-        <div class="value" id="conceptoDisplay"></div>
-      </div>
-      <div class="row">
-        <div class="label">Referencia:</div>
-        <div class="value" id="referenciaDisplay"></div>
-      </div>
-
-      <div class="footer">Gracias por preferirnos</div>
-    </div>
   </div>
 
+  <canvas id="receiptCanvas" style="display:none;"></canvas>
+  <img id="receiptImage" alt="Recibo Pago Móvil Banco de Venezuela" style="display:none;" />
+
   <script>
+    const form = document.getElementById('pagoForm');
+    const canvas = document.getElementById('receiptCanvas');
+    const receiptImage = document.getElementById('receiptImage');
+
     function generarReferencia(length = 12) {
       const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
       let ref = '';
@@ -205,16 +142,80 @@
       return ref;
     }
 
-    const form = document.getElementById('pagoForm');
-    const receipt = document.getElementById('receipt');
-    const fechaHoraElem = document.getElementById('fechaHora');
-    const telDisplay = document.getElementById('telDisplay');
-    const cedDisplay = document.getElementById('cedDisplay');
-    const montoDisplay = document.getElementById('montoDisplay');
-    const conceptoDisplay = document.getElementById('conceptoDisplay');
-    const referenciaDisplay = document.getElementById('referenciaDisplay');
+    function dibujarRecibo(data) {
+      const width = 400;
+      const height = 450;
+      canvas.width = width;
+      canvas.height = height;
+      const ctx = canvas.getContext('2d');
 
-    form.addEventListener('submit', e => {
+      // Fondo blanco
+      ctx.fillStyle = '#f5faff';
+      ctx.fillRect(0, 0, width, height);
+
+      // Bordes
+      ctx.strokeStyle = '#004aad';
+      ctx.lineWidth = 4;
+      ctx.strokeRect(0, 0, width, height);
+
+      // Logo (dibujamos la imagen oficial)
+      const logo = new Image();
+      logo.crossOrigin = "anonymous";
+      logo.src = 'https://upload.wikimedia.org/wikipedia/commons/thumb/7/7a/Logo_Banco_de_Venezuela.svg/256px-Logo_Banco_de_Venezuela.svg.png';
+
+      logo.onload = () => {
+        // Fondo para logo
+        ctx.fillStyle = '#ffffff';
+        ctx.fillRect(10, 10, width - 20, 70);
+        // Dibujar logo
+        ctx.drawImage(logo, (width - 140) / 2, 15, 140, 50);
+
+        // Texto título
+        ctx.fillStyle = '#004aad';
+        ctx.font = 'bold 22px "Roboto Mono", monospace';
+        ctx.textAlign = 'center';
+        ctx.fillText('PAGO MÓVIL', width / 2, 90);
+
+        // Línea separadora
+        ctx.strokeStyle = '#004aad';
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        ctx.moveTo(10, 105);
+        ctx.lineTo(width - 10, 105);
+        ctx.stroke();
+
+        // Datos recibo
+        ctx.fillStyle = '#00357c';
+        ctx.font = '16px "Roboto Mono", monospace';
+        ctx.textAlign = 'left';
+
+        const startX = 20;
+        let startY = 130;
+        const lineHeight = 28;
+
+        function textoLabelValor(label, valor) {
+          ctx.fillText(label, startX, startY);
+          ctx.textAlign = 'right';
+          ctx.fillText(valor, width - 20, startY);
+          ctx.textAlign = 'left';
+          startY += lineHeight;
+        }
+
+        textoLabelValor('Fecha y hora:', data.fechaHora);
+        textoLabelValor('Teléfono:', data.telefono);
+        textoLabelValor('Cédula:', data.cedula);
+        textoLabelValor('Monto Bs:', data.monto.toFixed(2));
+        textoLabelValor('Concepto:', data.concepto);
+        textoLabelValor('Referencia:', data.referencia);
+
+        // Mensaje final centrado
+        ctx.textAlign = 'center';
+        ctx.font = 'bold 16px "Roboto Mono", monospace';
+        ctx.fillText('Gracias por preferirnos', width / 2, height - 40);
+      };
+    }
+
+    form.addEventListener('submit', (e) => {
       e.preventDefault();
 
       const telefono = form.telefono.value.trim();
@@ -222,7 +223,6 @@
       const monto = parseFloat(form.monto.value);
       const concepto = form.concepto.value;
 
-      // Validaciones
       if (!/^0\d{10}$/.test(telefono)) {
         alert('Número de teléfono inválido. Debe tener 11 dígitos y comenzar con 0.');
         return;
@@ -236,34 +236,4 @@
         return;
       }
       if (!concepto) {
-        alert('Seleccione un concepto válido.');
-        return;
-      }
-
-      // Fecha y hora actual formato DD/MM/YYYY HH:mm:ss
-      const now = new Date();
-      const dd = String(now.getDate()).padStart(2, '0');
-      const mm = String(now.getMonth() + 1).padStart(2, '0');
-      const yyyy = now.getFullYear();
-      const hh = String(now.getHours()).padStart(2, '0');
-      const min = String(now.getMinutes()).padStart(2, '0');
-      const ss = String(now.getSeconds()).padStart(2, '0');
-      const fechaHora = ${dd}/${mm}/${yyyy} ${hh}:${min}:${ss};
-
-      const referencia = generarReferencia();
-
-      // Mostrar recibo con datos
-      fechaHoraElem.textContent = fechaHora;
-      telDisplay.textContent = telefono;
-      cedDisplay.textContent = cedula;
-      montoDisplay.textContent = monto.toFixed(2);
-      conceptoDisplay.textContent = concepto;
-      referenciaDisplay.textContent = referencia;
-
-      receipt.style.display = 'block';
-
-      form.reset();
-    });
-  </script>
-</body>
-</html>
+        alert
