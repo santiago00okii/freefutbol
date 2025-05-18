@@ -1,50 +1,281 @@
-<!DOCTYPE html><html lang="es">
+<!DOCTYPE html>
+<html lang="es">
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Free Fútbol - Resultados y Buscador</title>
+<title>Fútbol Free - Estilo Transfermarkt (Datos Estáticos)</title>
 <style>
-  body { font-family: Arial, sans-serif; background: #f2f2f2; margin: 0; padding: 0; }
-  header { background: #1e3a8a; color: white; padding: 1em; text-align: center; font-size: 1.5em; }
-  main { padding: 1em; max-width: 1000px; margin: auto; }
-  input[type="text"] { padding: 0.5em; width: 100%; max-width: 600px; margin-bottom: 1em; }
-  #matches-container, #top-players, #search-results, #search-detail { background: white; padding: 1em; margin-bottom: 1em; border-radius: 8px; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
-  .player-card, .match-card { display: flex; align-items: center; margin-bottom: 0.5em; }
-  .player-card img, .match-card img { width: 40px; height: 40px; border-radius: 50%; margin-right: 1em; }
+  body {
+    font-family: Arial, sans-serif;
+    background: #f5f5f5;
+    margin: 0; padding: 0;
+    color: #222;
+  }
+  header {
+    background: #003366;
+    color: #fff;
+    padding: 15px 30px;
+    font-size: 28px;
+    font-weight: bold;
+    text-align: center;
+  }
+  main {
+    max-width: 1200px;
+    margin: 20px auto;
+    padding: 0 15px;
+  }
+  .search-container {
+    margin-bottom: 25px;
+    text-align: center;
+  }
+  input[type="text"] {
+    width: 350px;
+    padding: 10px 15px;
+    font-size: 16px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+  }
+  .section-title {
+    color: #003366;
+    margin-bottom: 10px;
+    font-size: 22px;
+    border-bottom: 3px solid #003366;
+    display: inline-block;
+  }
+  .top-players {
+    display: flex;
+    gap: 12px;
+    overflow-x: auto;
+    padding-bottom: 15px;
+  }
+  .top-player {
+    background: white;
+    border-radius: 8px;
+    width: 160px;
+    box-shadow: 0 2px 6px rgb(0 0 0 / 0.1);
+    text-align: center;
+    padding: 10px;
+    cursor: pointer;
+    position: relative;
+  }
+  .top-player img {
+    width: 100px;
+    border-radius: 50%;
+  }
+  .top-player .name {
+    font-weight: bold;
+    margin-top: 8px;
+  }
+  .top-player .team {
+    color: #555;
+    font-size: 14px;
+  }
+
+  .results-table, .players-table, .teams-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: white;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgb(0 0 0 / 0.15);
+    margin-bottom: 30px;
+  }
+  th, td {
+    padding: 10px 14px;
+    border-bottom: 1px solid #ddd;
+    text-align: left;
+    vertical-align: middle;
+  }
+  th {
+    background: #003366;
+    color: white;
+    user-select: none;
+  }
+  tr:hover {
+    background: #e7f0ff;
+  }
+
+  .player-photo {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    position: relative;
+  }
+  .icon-goal, .icon-assist, .icon-autogoal {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    width: 18px;
+    height: 18px;
+  }
+  .icon-goal {
+    background: url('https://cdn-icons-png.flaticon.com/512/2161/2161261.png') no-repeat center/contain;
+  }
+  .icon-assist {
+    background: url('https://cdn-icons-png.flaticon.com/512/888/888857.png') no-repeat center/contain;
+  }
+  .icon-autogoal {
+    background: url('https://cdn-icons-png.flaticon.com/512/565/565547.png') no-repeat center/contain;
+  }
+  .player-cell {
+    position: relative;
+  }
+  .player-info {
+    cursor: pointer;
+  }
+  .player-detail {
+    margin-top: 15px;
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgb(0 0 0 / 0.15);
+  }
+  .player-detail img {
+    width: 120px;
+    border-radius: 50%;
+    float: left;
+    margin-right: 20px;
+  }
+  .player-detail h2 {
+    margin-top: 0;
+  }
+  .clearfix::after {
+    content: "";
+    clear: both;
+    display: table;
+  }
+  .label {
+    font-weight: bold;
+    color: #003366;
+  }
+  .match-result {
+    font-weight: bold;
+  }
+  .match-date {
+    color: #555;
+    font-size: 14px;
+  }
+  .team-logo {
+    width: 40px;
+    vertical-align: middle;
+    margin-right: 8px;
+  }
+  .team-name {
+    vertical-align: middle;
+    font-weight: bold;
+  }
+  .country-flag {
+    width: 30px;
+    vertical-align: middle;
+    margin-right: 6px;
+  }
+  .country-name {
+    vertical-align: middle;
+    font-weight: 600;
+    cursor: pointer;
+    color: #003366;
+  }
+  /* Scroll horizontal container */
+  .horizontal-scroll {
+    overflow-x: auto;
+    display: flex;
+    gap: 10px;
+    padding-bottom: 15px;
+    margin-bottom: 30px;
+  }
+  .country-card {
+    background: white;
+    border-radius: 8px;
+    padding: 8px 15px;
+    box-shadow: 0 2px 6px rgb(0 0 0 / 0.1);
+    cursor: pointer;
+    white-space: nowrap;
+    display: flex;
+    align-items: center;
+  }
 </style>
 </head>
 <body>
-<header>Free Fútbol - Resultados y Buscador</header>
+
+<header>Fútbol Free</header>
+
 <main>
-<section id="search-section">
-  <input id="search-input" type="text" placeholder="Buscar jugadores, equipos o selecciones..." autocomplete="off"/>
-  <div id="search-results"></div>
-</section>
-<section>
-  <h2>Partidos en Vivo</h2>
-  <div id="matches-container">Cargando partidos en vivo...</div>
-</section>
-<section id="top-players-section">
-  <h2>Top 7 Jugadores de la Semana</h2>
-  <div id="top-players">Cargando...</div>
-</section>
-<section>
-  <h2>Detalle de Búsqueda</h2>
-  <div id="search-detail"></div>
-</section>
+  <div class="search-container">
+    <input id="searchInput" type="text" placeholder="Buscar jugador, equipo o selección..." oninput="handleSearch()" />
+  </div>
+
+  <section>
+    <div class="section-title">Top 7 Jugadores de la Semana</div>
+    <div class="top-players" id="topPlayers"></div>
+  </section>
+
+  <section>
+    <div class="section-title">Resultados en Vivo (Hoy)</div>
+    <table class="results-table" id="resultsTable">
+      <thead>
+        <tr>
+          <th>Fecha</th>
+          <th>Equipo Local</th>
+          <th>Resultado</th>
+          <th>Equipo Visitante</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+  </section>
+
+  <section>
+    <div class="section-title">Selecciona un País / Selección</div>
+    <div class="horizontal-scroll" id="countriesContainer"></div>
+  </section>
+
+  <section>
+    <div class="section-title" id="playersTitle">Jugadores</div>
+    <table class="players-table" id="playersTable">
+      <thead>
+        <tr>
+          <th>Jugador</th>
+          <th>Posición</th>
+          <th>Equipo Actual</th>
+          <th>País de Nacimiento</th>
+          <th>Títulos</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+  </section>
+
+  <section>
+    <div class="section-title">Equipos</div>
+    <table class="teams-table" id="teamsTable">
+      <thead>
+        <tr>
+          <th>Equipo</th>
+          <th>País</th>
+          <th>Títulos</th>
+          <th>Valoración</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+  </section>
+
+  <section class="player-detail" id="playerDetail" style="display:none;"></section>
 </main>
+
 <script>
-const apiKey = "41f8dea6b5ff0947b023f2a54a4a4572";
-const baseUrl = "https://v3.football.api-sports.io";
-const headers = {"x-apisports-key": apiKey};async function fetchLiveMatches() { const res = await fetch(${baseUrl}/fixtures?live=all, { headers }); const data = await res.json(); const container = document.getElementById("matches-container"); container.innerHTML = ""; data.response.forEach(match => { const div = document.createElement("div"); div.className = "match-card"; div.innerHTML = <img src="${match.teams.home.logo}" /> <strong>${match.teams.home.name}</strong> ${match.goals.home} - ${match.goals.away} <strong>${match.teams.away.name}</strong> <img src="${match.teams.away.logo}" />; container.appendChild(div); }); }
+  // Datos estáticos simulados (puedes modificar a tu gusto)
 
-async function fetchTopPlayers() { const res = await fetch(${baseUrl}/players/topscorers?league=39&season=2023, { headers }); const data = await res.json(); const container = document.getElementById("top-players"); container.innerHTML = ""; data.response.slice(0, 7).forEach(p => { const div = document.createElement("div"); div.className = "player-card"; div.innerHTML = <img src="${p.player.photo}" /> <div> <strong>${p.player.name}</strong><br> Goles: ${p.statistics[0].goals.total}, Asistencias: ${p.statistics[0].goals.assists || 0} </div>; container.appendChild(div); }); }
+  const countries = [
+    { id: 1, name: 'España', flag: 'https://flagcdn.com/w40/es.png' },
+    { id: 2, name: 'Argentina', flag: 'https://flagcdn.com/w40/ar.png' },
+    { id: 3, name: 'Brasil', flag: 'https://flagcdn.com/w40/br.png' },
+    { id: 4, name: 'Alemania', flag: 'https://flagcdn.com/w40/de.png' },
+    { id: 5, name: 'Francia', flag: 'https://flagcdn.com/w40/fr.png' },
+    { id: 6, name: 'Inglaterra', flag: 'https://flagcdn.com/w40/gb.png' },
+  ];
 
-async function search(query) { const res = await fetch(${baseUrl}/players?search=${query}&season=2023, { headers }); const data = await res.json(); const container = document.getElementById("search-results"); const detail = document.getElementById("search-detail"); container.innerHTML = ""; detail.innerHTML = ""; if (!data.response.length) { container.innerText = "No se encontraron resultados."; return; } data.response.forEach(p => { const div = document.createElement("div"); div.className = "player-card"; div.innerHTML = <img src="${p.player.photo}" /> <div> <strong>${p.player.name}</strong><br> Edad: ${p.player.age}, Nacionalidad: ${p.player.nationality} </div>; container.appendChild(div); div.onclick = () => { detail.innerHTML = <h3>${p.player.name}</h3> <p>Edad: ${p.player.age}</p> <p>Nacimiento: ${p.player.birth.date}, País: ${p.player.birth.country}</p> <p>Nacionalidad: ${p.player.nationality}</p> <p>Altura: ${p.player.height}, Peso: ${p.player.weight}</p> <img src="${p.player.photo}" style="width:100px"/>; }; }); }
-
-document.getElementById("search-input").addEventListener("input", e => { const query = e.target.value.trim(); if (query.length > 2) search(query); });
-
-fetchLiveMatches(); fetchTopPlayers(); setInterval(fetchLiveMatches, 5000); </script>
-
-</body>
-</html>
+  const teams = [
+    { id: 1, name: 'Real Madrid', countryId: 1, titles: 35, rating: 92, logo: 'https://upload.wikimedia.org/wikipedia/en/5/56/Real_Madrid_CF.svg' },
+    { id: 2, name: 'Barcelona', countryId: 1, titles: 26, rating: 89, logo: 'https://upload.wikimedia.org/wikipedia/en/4/47/FC_Barcelona_%28crest%29.svg' },
+    { id: 3, name: 'Boca Juniors
